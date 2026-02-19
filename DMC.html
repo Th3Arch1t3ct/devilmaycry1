@@ -23,9 +23,14 @@
         window.bgColor = bgColor;
         window.txtColor = txtColor;
         document.write('<style>body, .music-container { background-color: ' + bgColor + ' !important; color: ' + txtColor + ' !important; } .music-header h1, .music-header p, .music-card-title, .music-card-artist, .music-card-year { color: ' + txtColor + ' !important; }</style>');
-        document.write('<style>.hex-display { position: fixed; top: 1rem; left: 1rem; font-family: monospace; font-size: 1.125rem; font-weight: 600; transition: all 0.3s; cursor: pointer; z-index: 50; color: ' + txtColor + '; } .hex-display:hover { opacity: 0.7; } </style>');
     </script>
     <style>
+        /* Override default overflow hidden from styles.css */
+        body {
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
         .music-container {
             min-height: 100vh;
             padding: 6rem 2rem 2rem;
@@ -88,7 +93,7 @@
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
-            touch-action: manipulation;
+            touch-action: pan-y;
             user-select: none;
             -webkit-user-select: none;
         }
@@ -285,10 +290,6 @@
     </style>
 </head>
 <body>
-    <div class="hex-display" id="hexDisplay"></div>
-    <script>
-        document.getElementById('hexDisplay').textContent = window.bgColor;
-    </script>
     <div class="music-container">
         <a href="music-eras.html" class="back-button">← Back</a>
         
