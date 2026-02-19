@@ -10,7 +10,7 @@ let icons = [
     {
         id: 2,
         title: "Songs in Progress",
-        image: "../public/icons/folder-icon.gif",
+        image: "../public/icons/folder-icon.png",
         link: "songs-in-progress.html",
         position: { x: 0, y: 0 },
     },
