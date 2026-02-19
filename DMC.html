@@ -19,6 +19,9 @@
         }
         const bgColor = getRandomHexColor();
         const txtColor = getContrastingColor(bgColor);
+        // Make colors globally available
+        window.bgColor = bgColor;
+        window.txtColor = txtColor;
         document.write('<style>body, .music-container { background-color: ' + bgColor + ' !important; color: ' + txtColor + ' !important; } .music-header h1, .music-header p, .music-card-title, .music-card-artist, .music-card-year { color: ' + txtColor + ' !important; }</style>');
         document.write('<style>.hex-display { position: fixed; top: 1rem; left: 1rem; font-family: monospace; font-size: 1.125rem; font-weight: 600; transition: all 0.3s; cursor: pointer; z-index: 50; color: ' + txtColor + '; } .hex-display:hover { opacity: 0.7; } </style>');
     </script>
@@ -133,11 +136,143 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-player {
+            background: #1a1a1a;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .modal-player.fullscreen {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 0;
+        }
+
+        .modal-player.minimized {
+            max-width: 400px;
+            max-height: 300px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: #2a2a2a;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .modal-player.fullscreen .modal-header {
+            border-radius: 0;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+            margin: 0;
+        }
+
+        .modal-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .modal-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .modal-content video,
+        .modal-content audio {
+            width: 100%;
+            max-height: 100%;
+            border-radius: 8px;
+        }
+
+        .modal-player.minimized .modal-content {
+            padding: 1rem;
+        }
+
+        .media-type-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .audio-badge {
+            background: rgba(139, 69, 19, 0.9);
+        }
+
+        .video-badge {
+            background: rgba(25, 118, 210, 0.9);
+        }
     </style>
 </head>
 <body>
     <div class="hex-display" id="hexDisplay"></div>
-    <script>document.getElementById('hexDisplay').textContent = bgColor;</script>
+    <script>
+        document.getElementById('hexDisplay').textContent = window.bgColor;
+    </script>
     <div class="music-container">
         <a href="music-eras.html" class="back-button">← Back</a>
         
@@ -147,124 +282,27 @@
         </div>
 
         <div class="music-grid" id="musicGrid">
-            <!-- Music cards will be generated here -->
+            <!-- Media cards will be generated here -->
         </div>
     </div>
 
-    <script>
-        // Generate random hex color
-        function getRandomHexColor() {
-            return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
-        }
+    <!-- Modal Player -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-player" id="modalPlayer">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Media Player</h3>
+                <div class="modal-controls">
+                    <button class="modal-btn" id="minimizeBtn" title="Minimize">−</button>
+                    <button class="modal-btn" id="expandBtn" title="Expand">⛶</button>
+                    <button class="modal-btn" id="closeBtn" title="Close">×</button>
+                </div>
+            </div>
+            <div class="modal-content" id="modalContent">
+                <!-- Media player will be inserted here -->
+            </div>
+        </div>
+    </div>
 
-        // Calculate contrasting text color (black or white) based on background brightness
-        function getContrastingColor(hexColor) {
-            // Convert hex to RGB
-            const r = parseInt(hexColor.substr(1, 2), 16);
-            const g = parseInt(hexColor.substr(3, 2), 16);
-            const b = parseInt(hexColor.substr(5, 2), 16);
-            
-            // Calculate brightness (YIQ formula)
-            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-            
-            // Return black for bright backgrounds, white for dark backgrounds
-            return brightness > 128 ? '#000000' : '#ffffff';
-        }
-
-        // Set random background on page load
-        const bgColor = getRandomHexColor();
-        const txtColor = getContrastingColor(bgColor);
-        
-        console.log('Music Page - Background Color:', bgColor, 'Text Color:', txtColor);
-        
-        // Apply immediately to body
-        document.body.style.backgroundColor = bgColor;
-        document.body.style.color = txtColor;
-        
-        // Set container background when DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
-            const musicContainer = document.querySelector('.music-container');
-            if (musicContainer) {
-                musicContainer.style.backgroundColor = bgColor;
-            }
-            
-            // Update all text colors
-            document.querySelectorAll('.music-header h1, .music-header p, .music-card-title, .music-card-artist, .music-card-year').forEach(el => {
-                el.style.color = txtColor;
-            });
-            
-            renderMusicCards();
-        });
-
-        // Sample music data
-        const musicData = [
-            {
-                id: 1,
-                title: "Album 1",
-                artist: "Artist Name",
-                year: "2024",
-                image: "🎵"
-            },
-            {
-                id: 2,
-                title: "Album 2",
-                artist: "Artist Name",
-                year: "2023",
-                image: "🎵"
-            },
-            {
-                id: 3,
-                title: "Album 3",
-                artist: "Artist Name",
-                year: "2022",
-                image: "🎵"
-            },
-            {
-                id: 4,
-                title: "Album 4",
-                artist: "Artist Name",
-                year: "2021",
-                image: "🎵"
-            },
-            {
-                id: 5,
-                title: "Album 5",
-                artist: "Artist Name",
-                year: "2020",
-                image: "🎵"
-            },
-            {
-                id: 6,
-                title: "Album 6",
-                artist: "Artist Name",
-                year: "2019",
-                image: "🎵"
-            }
-        ];
-
-        // Render music cards
-        function renderMusicCards() {
-            const musicGrid = document.getElementById('musicGrid');
-            
-            musicData.forEach(music => {
-                const card = document.createElement('div');
-                card.className = 'music-card';
-                
-                card.innerHTML = `
-                    <div class="music-card-image">${music.image}</div>
-                    <div class="music-card-content">
-                        <div class="music-card-title">${music.title}</div>
-                        <div class="music-card-artist">${music.artist}</div>
-                        <div class="music-card-year">${music.year}</div>
-                    </div>
-                `;
-                
-                musicGrid.appendChild(card);
-            });
-        }
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', renderMusicCards);
-    </script>
+    <script src="DMC.js"></script>
 </body>
 </html>
