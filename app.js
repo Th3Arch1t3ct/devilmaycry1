@@ -1,55 +1,41 @@
-// Types
-interface Position {
-    x: number;
-    y: number;
-}
-
-interface DraggableIcon {
-    id: number;
-    title: string;
-    image: string;
-    link: string;
-    position: Position;
-}
-
 // State
-let icons: DraggableIcon[] = [
+let icons = [
     {
         id: 1,
         title: "Music",
-        image: "/icons/Yeezy.png",
+        image: "icons/Yeezy.png",
         link: "/music",
         position: { x: 800, y: 100 },
     },
     {
         id: 4,
         title: "Wiki",
-        image: "/icons/About.png",
+        image: "icons/About.png",
         link: "/about",
         position: { x: 730, y: 300 },
     },
     {
         id: 5,
         title: "Contact",
-        image: "/icons/contact.png",
+        image: "icons/contact.png",
         link: "/contact",
         position: { x: 920, y: 350 },
     },
 ];
 
-let activeIcon: number | null = null;
-let startPos: Position = { x: 0, y: 0 };
-let isDragging: boolean = false;
-let hasMoved: boolean = false;
+let activeIcon = null;
+let startPos = { x: 0, y: 0 };
+let isDragging = false;
+let hasMoved = false;
 
 // Get container element
-const containerRef = document.getElementById('iconsWrapper') as HTMLDivElement;
+const containerRef = document.getElementById('iconsWrapper');
 const backgroundColor = '#ffffff';
 const textColor = '#000000';
 
 // Set background color and text color
 document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('mainContainer') as HTMLDivElement;
+    const container = document.getElementById('mainContainer');
     if (container) {
         container.style.backgroundColor = backgroundColor;
         container.style.color = textColor;
@@ -59,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Render icons to DOM
-function renderIcons(): void {
+function renderIcons() {
     const iconsWrapper = document.getElementById('iconsWrapper');
     if (!iconsWrapper) return;
 
@@ -90,20 +76,20 @@ function renderIcons(): void {
         `;
 
         // Add mouse down event
-        iconDiv.addEventListener('mousedown', (e) => handleMouseDown(icon.id, e as MouseEvent));
+        iconDiv.addEventListener('mousedown', (e) => handleMouseDown(icon.id, e));
         
         // Add touch start event
-        iconDiv.addEventListener('touchstart', (e) => handleTouchStart(icon.id, e as TouchEvent), { passive: false });
+        iconDiv.addEventListener('touchstart', (e) => handleTouchStart(icon.id, e), { passive: false });
         
         // Add click event
-        iconDiv.addEventListener('click', (e) => handleIconClick(e as MouseEvent, icon.link));
+        iconDiv.addEventListener('click', (e) => handleIconClick(e, icon.link));
 
         iconsWrapper.appendChild(iconDiv);
     });
 }
 
 // Handle mouse down to start dragging
-function handleMouseDown(id: number, e: MouseEvent): void {
+function handleMouseDown(id, e) {
     e.preventDefault();
     activeIcon = id;
     startPos = { x: e.clientX, y: e.clientY };
@@ -117,7 +103,7 @@ function handleMouseDown(id: number, e: MouseEvent): void {
 }
 
 // Handle touch start for mobile
-function handleTouchStart(id: number, e: TouchEvent): void {
+function handleTouchStart(id, e) {
     e.preventDefault();
     activeIcon = id;
     startPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -131,7 +117,7 @@ function handleTouchStart(id: number, e: TouchEvent): void {
 }
 
 // Handle mouse move to update position
-function handleMouseMove(e: MouseEvent): void {
+function handleMouseMove(e) {
     if (activeIcon !== null && isDragging) {
         const deltaX = e.clientX - startPos.x;
         const deltaY = e.clientY - startPos.y;
@@ -168,7 +154,7 @@ function handleMouseMove(e: MouseEvent): void {
 }
 
 // Handle touch move for mobile
-function handleTouchMove(e: TouchEvent): void {
+function handleTouchMove(e) {
     if (activeIcon !== null && isDragging) {
         e.preventDefault();
         const deltaX = e.touches[0].clientX - startPos.x;
@@ -206,7 +192,7 @@ function handleTouchMove(e: TouchEvent): void {
 }
 
 // Handle mouse up to stop dragging
-function handleMouseUp(): void {
+function handleMouseUp() {
     if (activeIcon !== null) {
         const iconElement = document.getElementById(`icon-${activeIcon}`);
         if (iconElement) {
@@ -218,7 +204,7 @@ function handleMouseUp(): void {
 }
 
 // Handle click on icon (for navigation)
-function handleIconClick(e: MouseEvent, link: string): void {
+function handleIconClick(e, link) {
     if (!hasMoved) {
         window.location.href = link;
     } else {
@@ -227,7 +213,7 @@ function handleIconClick(e: MouseEvent, link: string): void {
 }
 
 // Attach event listeners
-function attachEventListeners(): void {
+function attachEventListeners() {
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
