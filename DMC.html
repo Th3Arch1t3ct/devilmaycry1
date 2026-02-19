@@ -87,11 +87,19 @@
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .music-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .music-card:active {
+            transform: scale(0.98);
         }
 
         .music-card-image {
@@ -220,10 +228,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .modal-btn:hover {
             background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-btn:active {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .modal-content {

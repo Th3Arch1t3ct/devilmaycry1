@@ -49,8 +49,14 @@ function renderMusicCards() {
             </div>
         `;
         
-        // Add click event to open modal
-        card.addEventListener('click', () => openModal(media));
+        // Add both click and touch events for better mobile compatibility
+        const handleCardClick = (e) => {
+            e.preventDefault();
+            openModal(media);
+        };
+        
+        card.addEventListener('click', handleCardClick);
+        card.addEventListener('touchend', handleCardClick);
         
         musicGrid.appendChild(card);
     });
