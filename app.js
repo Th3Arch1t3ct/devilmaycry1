@@ -1,20 +1,38 @@
-// State
+// State - positions will be calculated responsively
 let icons = [
     {
         id: 1,
         title: "Music",
         image: "icons/Yeezy.png",
         link: "dmc-menu.html",
-        position: { x: 600, y: 100 },
+        position: { x: 0, y: 0 },
     },
     {
         id: 2,
         title: "The Ten",
         image: "icons/About.png",
         link: "about.html",
-        position: { x: 630, y: 300 },
+        position: { x: 0, y: 0 },
     },
 ];
+
+// Calculate responsive centered positions
+function calculateResponsivePositions() {
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const centerX = viewportWidth / 2;
+    const centerY = viewportHeight / 2;
+    
+    // Mobile layout
+    if (viewportWidth <= 768) {
+        icons[0].position = { x: centerX - 80, y: centerY - 150 };
+        icons[1].position = { x: centerX - 80, y: centerY + 50 };
+    } else {
+        // Desktop layout
+        icons[0].position = { x: centerX - 200, y: centerY - 100 };
+        icons[1].position = { x: centerX + 50, y: centerY - 50 };
+    }
+}
 
 let activeIcon = null;
 let startPos = { x: 0, y: 0 };
@@ -57,8 +75,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     document.body.style.backgroundColor = backgroundColor;
     document.body.style.color = textColor;
+    calculateResponsivePositions();
     renderIcons();
     attachEventListeners();
+});
+
+// Recalculate positions on window resize
+window.addEventListener('resize', () => {
+    calculateResponsivePositions();
+    renderIcons();
 });
 
 // Render icons to DOM

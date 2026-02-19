@@ -19,6 +19,11 @@ body {
     width: 100%;
     height: 100vh;
     padding-top: 4rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
 }
 
 .draggable-icon {
@@ -26,6 +31,13 @@ body {
     cursor: grab;
     z-index: 0;
     transition: all 0.1s ease;
+}
+
+@media (max-width: 768px) {
+    .icons-wrapper {
+        padding-top: 6rem;
+        gap: 3rem;
+    }
 }
 
 .draggable-icon.dragging {

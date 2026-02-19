@@ -1,13 +1,24 @@
-// State
+// State - positions will be calculated responsively
 let icons = [
     {
         id: 1,
         title: "DMC",
         image: "icons/Yeezy.png",
         link: "music.html",
-        position: { x: 600, y: 200 },
+        position: { x: 0, y: 0 },
     },
 ];
+
+// Calculate responsive centered positions
+function calculateResponsivePositions() {
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const centerX = viewportWidth / 2;
+    const centerY = viewportHeight / 2;
+    
+    // Center the single DMC icon
+    icons[0].position = { x: centerX - 80, y: centerY - 80 };
+}
 
 let activeIcon = null;
 let startPos = { x: 0, y: 0 };
@@ -50,8 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     document.body.style.backgroundColor = backgroundColor;
     document.body.style.color = textColor;
+    calculateResponsivePositions();
     renderIcons();
     attachEventListeners();
+});
+
+// Recalculate positions on window resize
+window.addEventListener('resize', () => {
+    calculateResponsivePositions();
+    renderIcons();
 });
 
 // Render icons to DOM
