@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        // Generate random background color immediately
+        function getRandomHexColor() {
+            return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+        }
+        function getContrastingColor(hexColor) {
+            const r = parseInt(hexColor.substr(1, 2), 16);
+            const g = parseInt(hexColor.substr(3, 2), 16);
+            const b = parseInt(hexColor.substr(5, 2), 16);
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            return brightness > 128 ? '#000000' : '#ffffff';
+        }
+        const bgColor = getRandomHexColor();
+        const txtColor = getContrastingColor(bgColor);
+        document.write('<style>body, .music-container { background-color: ' + bgColor + ' !important; color: ' + txtColor + ' !important; } .music-header h1, .music-header p, .music-card-title, .music-card-artist, .music-card-year { color: ' + txtColor + ' !important; }</style>');
+    </script>
     <style>
         .music-container {
             min-height: 100vh;
@@ -60,7 +76,6 @@
         }
 
         .music-card {
-            background: #f5f5f5;
             border-radius: 8px;
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
