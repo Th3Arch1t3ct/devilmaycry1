@@ -2,16 +2,16 @@
 let icons = [
     {
         id: 1,
-        title: "Music",
-        image: "public/icons/Yeezy.png",
-        link: "music-eras.html",
+        title: "Valentina",
+        image: "public/icons/avatar.svg",
+        link: "Valentina.html",
         position: { x: 0, y: 0 },
     },
     {
         id: 2,
-        title: "The Ten",
-        image: "public/icons/skull.png",
-        link: "the-ten.html",
+        title: "Hector",
+        image: "public/icons/avatar.svg",
+        link: "Hector.html",
         position: { x: 0, y: 0 },
     },
 ];
@@ -23,15 +23,8 @@ function calculateResponsivePositions() {
     const centerX = viewportWidth / 2;
     const centerY = viewportHeight / 2;
     
-    // Mobile layout
-    if (viewportWidth <= 768) {
-        icons[0].position = { x: centerX - 80, y: centerY - 150 };
-        icons[1].position = { x: centerX - 80, y: centerY + 50 };
-    } else {
-        // Desktop layout
-        icons[0].position = { x: centerX - 200, y: centerY - 100 };
-        icons[1].position = { x: centerX + 50, y: centerY - 50 };
-    }
+    // Center the single DMC icon
+    icons[0].position = { x: centerX - 80, y: centerY - 80 };
 }
 
 let activeIcon = null;
