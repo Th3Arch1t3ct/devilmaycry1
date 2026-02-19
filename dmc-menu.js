@@ -150,7 +150,7 @@ function handleMouseMove(e) {
         const deltaX = e.clientX - startPos.x;
         const deltaY = e.clientY - startPos.y;
 
-        if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+        if (Math.abs(deltaX) > 15 || Math.abs(deltaY) > 15) {
             hasMoved = true;
         }
 
@@ -188,7 +188,7 @@ function handleTouchMove(e) {
         const deltaX = e.touches[0].clientX - startPos.x;
         const deltaY = e.touches[0].clientY - startPos.y;
 
-        if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+        if (Math.abs(deltaX) > 15 || Math.abs(deltaY) > 15) {
             hasMoved = true;
         }
 
