@@ -12,8 +12,6 @@ body {
 .container {
     height: 100vh;
     overflow: hidden;
-    background-color: #ffffff;
-    color: #000000;
 }
 
 .icons-wrapper {

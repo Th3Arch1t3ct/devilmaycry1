@@ -46,6 +46,8 @@ function getContrastingColor(hexColor) {
 const backgroundColor = getRandomHexColor();
 const textColor = getContrastingColor(backgroundColor);
 
+console.log('Background Color:', backgroundColor, 'Text Color:', textColor);
+
 // Set background color and text color
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('mainContainer');
@@ -53,6 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
         container.style.backgroundColor = backgroundColor;
         container.style.color = textColor;
     }
+    document.body.style.backgroundColor = backgroundColor;
+    document.body.style.color = textColor;
     renderIcons();
     attachEventListeners();
 });

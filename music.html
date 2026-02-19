@@ -154,14 +154,26 @@
         // Set random background on page load
         const bgColor = getRandomHexColor();
         const txtColor = getContrastingColor(bgColor);
-        document.querySelector('.music-container').style.background = bgColor;
+        
+        console.log('Music Page - Background Color:', bgColor, 'Text Color:', txtColor);
+        
+        // Apply immediately to body
+        document.body.style.backgroundColor = bgColor;
         document.body.style.color = txtColor;
         
-        // Update all text colors
+        // Set container background when DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
+            const musicContainer = document.querySelector('.music-container');
+            if (musicContainer) {
+                musicContainer.style.backgroundColor = bgColor;
+            }
+            
+            // Update all text colors
             document.querySelectorAll('.music-header h1, .music-header p, .music-card-title, .music-card-artist, .music-card-year').forEach(el => {
                 el.style.color = txtColor;
             });
+            
+            renderMusicCards();
         });
 
         // Sample music data
