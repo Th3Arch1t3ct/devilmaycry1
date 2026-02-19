@@ -10,7 +10,7 @@ let icons = [
     {
         id: 2,
         title: "The Ten",
-        image: "public/icons/skull.png",
+        image: "public/icons/avatar.svg",
         link: "the-ten.html",
         position: { x: 0, y: 0 },
     },
