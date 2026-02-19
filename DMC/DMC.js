@@ -2,7 +2,7 @@
 let icons = [
     {
         id: 1,
-        title: "Finished Songs",
+        title: "Music/Videos",
         image: "../public/icons/folderzip.png",
         link: "finished-songs.html",
         position: { x: 0, y: 0 },
@@ -16,14 +16,14 @@ let icons = [
     },
     {
         id: 3,
-        title: "BEATS",
+        title: "Beats",
         image: "../public/icons/imac.gif",
         link: "beats.html",
         position: { x: 0, y: 0 },
     },
     {
         id: 4,
-        title: "TRACK LIST",
+        title: "Track List",
         image: "../public/icons/newfolder.png",
         link: "track-list.html",
         position: { x: 0, y: 0 },
