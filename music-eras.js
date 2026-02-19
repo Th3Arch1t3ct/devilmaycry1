@@ -3,7 +3,7 @@ let icons = [
     {
         id: 1,
         title: "DMC",
-        image: "icons/tide.png",
+        image: "icons/tide.PNG",
         link: "music.html",
         position: { x: 0, y: 0 },
     },
