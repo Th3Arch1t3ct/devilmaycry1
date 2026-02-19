@@ -5,14 +5,14 @@ let icons = [
         title: "Music",
         image: "icons/Yeezy.png",
         link: "music.html",
-        position: { x: 500, y: 100 },
+        position: { x: 600, y: 100 },
     },
     {
         id: 2,
         title: "The Ten",
         image: "icons/About.png",
-        link: "/about",
-        position: { x: 730, y: 300 },
+        link: "about.html",
+        position: { x: 630, y: 300 },
     },
 ];
 
