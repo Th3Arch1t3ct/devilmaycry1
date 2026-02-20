@@ -3,6 +3,7 @@
 // Audio data
 const songs = [
     {
+        id: 1,
         title: "Honey-Boo-Boo",
         icon: "🎵",
         thumbnail: "../public/icons/kytka.JPEG",
@@ -159,11 +160,6 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
         closeAudioPlayer();
     }
-});
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-    initializeMediaGrid();
 });
 
 // Initialize on page load
