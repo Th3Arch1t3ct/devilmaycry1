@@ -124,11 +124,13 @@ function openAudioPlayer(songIndex) {
 function closeAudioPlayer() {
     modalOverlay.classList.remove('active');
     
-    // Stop and remove audio
+    // Stop and remove audio properly
     const audio = modalContent.querySelector('audio');
     if (audio) {
         audio.pause();
-        audio.src = '';
+        // Remove src to stop loading, but don't set to empty string
+        audio.removeAttribute('src');
+        audio.load(); // Reset the audio element
     }
     modalContent.innerHTML = '';
     
