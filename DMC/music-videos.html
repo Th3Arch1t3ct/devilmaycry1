@@ -117,19 +117,15 @@
         }
 
         .modal-player {
-            background: #1a1a1a;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
             position: fixed;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
             display: flex;
             flex-direction: column;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
             pointer-events: auto;
+            max-width: 600px;
+            width: 90%;
         }
 
         .modal-player.fullscreen {
@@ -137,21 +133,18 @@
             height: 100%;
             max-width: 100%;
             max-height: 100%;
-            border-radius: 0;
+            background: #000;
         }
 
         .modal-player.minimized {
             max-width: 400px;
-            max-height: 300px;
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 1.5rem;
-            background: #2a2a2a;
-            border-radius: 12px 12px 0 0;
+            padding: 0.5rem 0.75rem;
             cursor: move;
             cursor: grab;
         }
@@ -161,13 +154,13 @@
         }
 
         .modal-player.fullscreen .modal-header {
-            border-radius: 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 1.5rem;
         }
 
         .modal-title {
-            font-size: 1.25rem;
+            font-size: 1rem;
             font-weight: 600;
-            color: #fff;
             margin: 0;
         }
 
@@ -179,48 +172,57 @@
         .modal-btn {
             background: none;
             border: none;
-            color: #fff;
             font-size: 1.25rem;
             cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 4px;
-            transition: background 0.2s;
-            width: 36px;
-            height: 36px;
+            padding: 0.25rem;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
+            opacity: 0.7;
+            transition: opacity 0.2s;
             touch-action: manipulation;
             user-select: none;
             -webkit-user-select: none;
         }
 
         .modal-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+            opacity: 1;
         }
 
         .modal-btn:active {
-            background: rgba(255, 255, 255, 0.2);
+            opacity: 0.5;
         }
 
         .modal-content {
-            padding: 1.5rem;
-            flex: 1;
+            padding: 0.5rem 0.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
         }
 
         .modal-content video {
             width: 100%;
+            max-height: 70vh;
+        }
+
+        .modal-player.fullscreen .modal-content {
+            padding: 0;
+            flex: 1;
+        }
+
+        .modal-player.fullscreen .modal-content video {
             max-height: 100%;
-            border-radius: 8px;
+            height: 100%;
         }
 
         .modal-player.minimized .modal-content {
-            padding: 1rem;
+            padding: 0.5rem;
+        }
+
+        .modal-player.minimized .modal-content video {
+            max-height: 40vh;
         }
     </style>
 </head>
@@ -253,6 +255,6 @@
         </div>
     </div>
 
-    <script src="music-videos.js?v=2.1"></script>
+    <script src="music-videos.js?v=2.2"></script>
 </body>
 </html>
