@@ -75,7 +75,8 @@ function initializeMediaGrid() {
     
     videos.forEach((video, index) => {
         const icon = document.createElement('div');
-        icon.className = 'clickable-icon';
+        icon.className = 'draggable-icon';
+        icon.id = `icon-${index}`;
         icon.setAttribute('data-video-index', index);
         icon.style.left = `${positions[index].x}px`;
         icon.style.top = `${positions[index].y}px`;
@@ -96,21 +97,155 @@ function initializeMediaGrid() {
             </div>
         `;
         
-        // Add click handler (non-draggable, just clickable)
-        icon.addEventListener('click', function(e) {
-            e.preventDefault();
-            openVideoPlayer(index);
+        // Add mouse down event for dragging
+        icon.addEventListener('mousedown', function(e) {
+            handleMouseDown(index, e);
         });
         
-        // Touch support for mobile
-        icon.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            openVideoPlayer(index);
-        });
+        // Add touch start event for mobile
+        icon.addEventListener('touchstart', function(e) {
+            handleTouchStart(index, e);
+        }, { passive: false });
         
         iconsWrapper.appendChild(icon);
     });
 }
+
+// Drag state
+let activeIcon = null;
+let startPos = { x: 0, y: 0 };
+let isDragging = false;
+let hasMoved = false;
+let touchStartTime = 0;
+let totalMovement = 0;
+
+// Handle mouse down to start dragging
+function handleMouseDown(index, e) {
+    e.preventDefault();
+    activeIcon = index;
+    startPos = { x: e.clientX, y: e.clientY };
+    isDragging = true;
+    hasMoved = false;
+
+    const iconElement = document.getElementById(`icon-${index}`);
+    if (iconElement) {
+        iconElement.classList.add('dragging');
+    }
+}
+
+// Handle touch start for mobile
+function handleTouchStart(index, e) {
+    activeIcon = index;
+    startPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    isDragging = false;
+    hasMoved = false;
+    touchStartTime = Date.now();
+    totalMovement = 0;
+
+    const iconElement = document.getElementById(`icon-${index}`);
+    if (iconElement) {
+        iconElement.classList.add('dragging');
+    }
+}
+
+// Handle mouse move to update position
+function handleMouseMove(e) {
+    if (activeIcon !== null && isDragging) {
+        const deltaX = e.clientX - startPos.x;
+        const deltaY = e.clientY - startPos.y;
+
+        if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+            hasMoved = true;
+        }
+
+        const iconElement = document.getElementById(`icon-${activeIcon}`);
+        if (iconElement) {
+            const currentLeft = parseInt(iconElement.style.left) || 0;
+            const currentTop = parseInt(iconElement.style.top) || 0;
+            iconElement.style.left = `${currentLeft + deltaX}px`;
+            iconElement.style.top = `${currentTop + deltaY}px`;
+        }
+
+        startPos = { x: e.clientX, y: e.clientY };
+    }
+}
+
+// Handle touch move for mobile
+function handleTouchMove(e) {
+    if (activeIcon !== null) {
+        const deltaX = e.touches[0].clientX - startPos.x;
+        const deltaY = e.touches[0].clientY - startPos.y;
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        
+        totalMovement += distance;
+
+        if (totalMovement > 10) {
+            isDragging = true;
+            hasMoved = true;
+            e.preventDefault();
+        }
+
+        if (isDragging) {
+            const iconElement = document.getElementById(`icon-${activeIcon}`);
+            if (iconElement) {
+                const currentLeft = parseInt(iconElement.style.left) || 0;
+                const currentTop = parseInt(iconElement.style.top) || 0;
+                iconElement.style.left = `${currentLeft + deltaX}px`;
+                iconElement.style.top = `${currentTop + deltaY}px`;
+            }
+
+            startPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }
+    }
+}
+
+// Handle mouse up to stop dragging
+function handleMouseUp(e) {
+    if (activeIcon !== null) {
+        const iconElement = document.getElementById(`icon-${activeIcon}`);
+        if (iconElement) {
+            iconElement.classList.remove('dragging');
+        }
+
+        // If not dragged, open player
+        if (!hasMoved) {
+            openVideoPlayer(activeIcon);
+        }
+
+        activeIcon = null;
+        isDragging = false;
+        hasMoved = false;
+    }
+}
+
+// Handle touch end for mobile
+function handleTouchEnd(e) {
+    if (activeIcon !== null) {
+        const iconElement = document.getElementById(`icon-${activeIcon}`);
+        if (iconElement) {
+            iconElement.classList.remove('dragging');
+        }
+
+        const touchDuration = Date.now() - touchStartTime;
+
+        // If tap (not drag), open player
+        if (!hasMoved && touchDuration < 300) {
+            e.preventDefault();
+            openVideoPlayer(activeIcon);
+        }
+
+        activeIcon = null;
+        isDragging = false;
+        hasMoved = false;
+        totalMovement = 0;
+    }
+}
+
+// Attach global event listeners
+document.addEventListener('mousemove', handleMouseMove);
+document.addEventListener('mouseup', handleMouseUp);
+document.addEventListener('touchmove', handleTouchMove, { passive: false });
+document.addEventListener('touchend', handleTouchEnd);
 
 // Recalculate positions on window resize
 window.addEventListener('resize', function() {

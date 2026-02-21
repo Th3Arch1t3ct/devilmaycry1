@@ -41,20 +41,25 @@
             height: calc(100vh - 8rem);
         }
 
-        .clickable-icon {
+        .draggable-icon {
             position: absolute;
-            cursor: pointer;
+            cursor: grab;
             transition: transform 0.2s;
             user-select: none;
             -webkit-user-select: none;
         }
 
-        .clickable-icon:hover {
+        .draggable-icon:hover {
             transform: scale(1.05);
         }
 
-        .clickable-icon:active {
-            transform: scale(0.95);
+        .draggable-icon:active {
+            cursor: grabbing;
+        }
+
+        .draggable-icon.dragging {
+            cursor: grabbing;
+            z-index: 1000;
         }
 
         .icon-content {
@@ -71,7 +76,6 @@
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             justify-content: center;
