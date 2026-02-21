@@ -4,11 +4,32 @@
 const songs = [
     {
         id: 1,
-        title: "Honey-Boo-Boo",
-        icon: "🎵",
+        title: "Honey-Boo-Boo I",
+        icon: "☮︎",
         thumbnail: "../public/icons/honeybooboovegan.png",
         audioPath: "../public/audio/2GA_Test1.mp3"
-    }
+    },
+     {
+        id: 2,
+        title: "Honey-Boo-Boo II",
+        icon: "☮︎",
+        thumbnail: "../public/icons/honeybooboovegan.png",
+        audioPath: "../public/audio/2GA_Test2.mp3"
+    },
+         {
+        id: 3,
+        title: "3GA TEST I",
+        icon: "☮︎",
+        thumbnail: "../public/icons/CD.png",
+        audioPath: "../public/audio/3GA_SoundTest.mp3"
+    },
+         {
+        id: 4,
+        title: "3GA TEST II",
+        icon: "☮︎",
+        thumbnail: "../public/icons/CD.png",
+        audioPath: "../public/audio/3GA_Vocal_Test2.mp3"
+    },
     // Add more songs here in the future
 ];
 
