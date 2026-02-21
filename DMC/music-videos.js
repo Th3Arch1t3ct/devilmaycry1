@@ -15,31 +15,39 @@ const videos = [
 function calculateIconPositions() {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
-    const centerX = viewportWidth / 2;
-    const centerY = viewportHeight / 2;
+    
+    // Use container dimensions, not viewport
+    const containerWidth = viewportWidth;
+    const containerHeight = viewportHeight - 130; // Account for header
+    const centerX = containerWidth / 2;
+    const centerY = containerHeight / 2;
     
     const positions = [];
     
     if (viewportWidth <= 768) {
         // Mobile: 2 column grid
-        const iconSpacing = 140;
-        const startX = centerX - iconSpacing;
-        const startY = centerY - (Math.ceil(videos.length / 2) * 90);
+        const iconWidth = 100;
+        const iconSpacing = 40;
+        const totalWidth = (iconWidth * 2) + iconSpacing;
+        const startX = centerX - totalWidth / 2;
+        const startY = Math.max(50, centerY - (Math.ceil(videos.length / 2) * 90));
         
         videos.forEach((video, index) => {
             const col = index % 2;
             const row = Math.floor(index / 2);
             positions.push({
-                x: startX + (col * iconSpacing * 2),
-                y: startY + (row * 180)
+                x: startX + (col * (iconWidth + iconSpacing)),
+                y: startY + (row * 160)
             });
         });
     } else {
         // Desktop: grid layout with spacing
         const cols = Math.min(3, videos.length);
+        const rows = Math.ceil(videos.length / cols);
         const iconSpacing = 200;
-        const startX = centerX - ((cols - 1) * iconSpacing / 2);
-        const startY = centerY - 100;
+        const totalWidth = (cols - 1) * iconSpacing;
+        const startX = centerX - totalWidth / 2;
+        const startY = Math.max(50, centerY - ((rows - 1) * 100));
         
         videos.forEach((video, index) => {
             const col = index % cols;
